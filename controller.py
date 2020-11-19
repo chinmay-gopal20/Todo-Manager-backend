@@ -29,10 +29,14 @@ class User(Resource):
     @staticmethod
     def get():
         print('Get User - Controller')
-        user_id = request.args['userId']
-        service = Service()
-        response = service.get_user(user_id=int(user_id))
-        print('type of response - ', type(response))
+        try:
+            user_id = request.args['userId']
+            service = Service()
+            response = service.get_user(user_id=int(user_id))
+        except:
+            service = Service()
+            response = service.get_all_users()
+        # print('type of response - ', type(response))
         return response
 
     @staticmethod

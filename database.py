@@ -25,7 +25,11 @@ class Database:
         try:
             print('get_user_count - Database')
             collection = self.db['todo_data']
-            return collection.count()
+            return list(collection.aggregate([
+                {
+                    '$group': {'_id': None, 'count': {'$max': '$user_id'}}
+                }
+            ]))
         except Exception as error:
             print('Error while getting total number of users - ', error)
 
@@ -130,7 +134,16 @@ class Database:
             collection = self.db['todo_data']
             return list(collection.find({'user_id': user_id}, {'_id': 0}))
         except Exception as error:
-            print('Error while retrieving all tasks for user ', str(user_id), ' - ', error)
+            print('Error while retrieving user ', str(user_id), ' - ', error)
+
+    # get all users
+    def get_all_users(self):
+        try:
+            collection = self.db['todo_data']
+            response = list(collection.find({}, {'_id': 0}).sort('user_id', 1))
+            return response
+        except Exception as error:
+            print('Error while retrieving all users - ', error)
 
     # update user
     def update_user(self, user_id=None, data=None):
