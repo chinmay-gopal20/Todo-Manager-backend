@@ -89,6 +89,12 @@ class Task(Resource):
             return service.get_users_alltasks(user_id=int(user_id))
 
 
+class Start:
+    @staticmethod
+    def get():
+        return "Welcome"
+
+api.add_resource(Start, '/')
 api.add_resource(User, '/user')
 api.add_resource(Task, '/user/<int:user_id>/tasks')
 
