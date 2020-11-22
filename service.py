@@ -17,11 +17,11 @@ class Service:
             user_data = database.get_user_by_mail(email=email)
             if user_data:
                 if user_data[0]['password'] == password:
-                    return {'user_id': user_data[0]['user_id']}
+                    return {'Message': 'Authorized', 'user_id': user_data[0]['user_id']}, 200
                 else:
-                    return {'Error': "The Email id or Password you entered is incorrect."}
+                    return {'Message': "The Email id or Password you entered is incorrect."}, 401
             else:
-                return {'Error': "User doesn't exist, please Sign Up to continue"}
+                return {'Message': "User doesn't exist, please Sign Up to continue"}, 401
         except Exception as error:
             return {'Message': 'Error while verfying user - ' + str(error)}, 400
 
@@ -46,7 +46,7 @@ class Service:
             #     item['due_date'] = datetime.strptime(item['due_date'], '%Y-%m-%d')
             #     task_count += 1
             # database.add_user(data)
-            return {'Message': 'Successfully inserted, user id - ' + str(user_count)}, 201
+            return {'Message': 'Successfully inserted', 'user id': str(user_count)}, 201
         except Exception as error:
             print('Error in add_user service - ', error)
             return {'Message': 'Insertion failed - ' + str(error)}, 400

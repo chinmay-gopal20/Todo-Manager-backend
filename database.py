@@ -172,10 +172,14 @@ class Database:
     def delete_user(self, user_id=None):
         try:
             print('delete_user Database')
-            collection = self.db['todo_data']
-            return collection.delete_one(
+            data_collection = self.db['todo_data']
+            user_collection = self.db['todo_user']
+            data_collection.delete_one(
                 {'user_id': user_id},
             )
+            return user_collection.delete_one((
+                {'user_id': user_id}
+            ))
         except Exception as error:
             print('Error while deleting user ', str(user_id), ' :- ', error)
 
