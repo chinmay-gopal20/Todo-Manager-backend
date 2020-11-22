@@ -1,20 +1,16 @@
 from flask import Flask, request
 from flask_restful import Api, Resource
 from flask_cors import CORS
-# from flask_swagger_ui import get_swaggerui_blueprint
-# from flask_restful_swagger import swagger
 
 # service class
 from service import Service
 
 # Flask initialisation
 app = Flask(__name__)
-CORS(app)
 app.debug = True
+app.config['SWAGGER'] = {"title": "ToDo Manager : Swagger-UI", "uiversion": 2}
+CORS(app)
 api = Api(app)
-
-# Wrap the Api with swagger.docs. It is a thin wrapper around the Api class that adds some swagger smarts
-# api = swagger.docs(Api(app), apiVersion='0.1')
 
 
 class User(Resource):
@@ -99,9 +95,19 @@ class Start(Resource):
         return "Welcome"
 
 
+class LoginVerification(Resource):
+    @staticmethod
+    def get():
+        service = Service()
+        email = request.args['email']
+        password = request.args['password']
+        return service.login_verification(email=email, password=password)
+
+
 api.add_resource(Start, '/')
 api.add_resource(User, '/user')
 api.add_resource(Task, '/user/<int:user_id>/tasks')
+api.add_resource(LoginVerification, '/verify-user')
 
 if __name__ == '__main__':
     app.run()

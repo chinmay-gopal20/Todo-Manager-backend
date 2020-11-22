@@ -9,6 +9,7 @@ class Database:
         self.conn = self.establish_connection()
         self.db = self.conn['todo_manager']
 
+
     # mongodb connection establishment with uri
     def establish_connection(self):
         try:
@@ -20,11 +21,20 @@ class Database:
         except Exception as error:
             print('Error while establishing connection - ', error)
 
+    # verify user
+    def get_user_by_mail(self, email=None):
+        try:
+            print('get user by mail - Database')
+            collection = self.db['todo_user']
+            return list(collection.find({'email': email}, {'_id': 0}))
+        except Exception as error:
+            print('Error while getting user by mail - ', error)
+
     # get total number of users in collection
     def get_user_count(self):
         try:
             print('get_user_count - Database')
-            collection = self.db['todo_data']
+            collection = self.db['todo_user']
             return list(collection.aggregate([
                 {
                     '$group': {'_id': None, 'count': {'$max': '$user_id'}}
@@ -53,7 +63,7 @@ class Database:
     def add_user(self, data=None):
         try:
             print('add_user - Database')
-            collection = self.db['todo_data']
+            collection = self.db['todo_user']
             return collection.insert(data)
         except Exception as error:
             print('Error while adding user - ', error)

@@ -8,6 +8,24 @@ from datetime import datetime, timedelta
 
 class Service:
 
+    # verify user
+    @staticmethod
+    def login_verification(email=None, password=None):
+        try:
+            print('login verification service')
+            database = Database()
+            user_data = database.get_user_by_mail(email=email)
+            if user_data:
+                if user_data[0]['password'] == password:
+                    return {'user_id': user_data[0]['user_id']}
+                else:
+                    return {'Error': "The Email id or Password you entered is incorrect."}
+            else:
+                return {'Error': "User doesn't exist, please Sign Up to continue"}
+        except Exception as error:
+            return {'Message': 'Error while verfying user - ' + str(error)}, 400
+
+
     # add created_date, last_modified in request body and insert in db
     # add user id, task id by quering the user id and task id from the collection
     @staticmethod
@@ -18,15 +36,16 @@ class Service:
             user_count = database.get_user_count()
             user_count = (user_count[0]['count'] if user_count else 0) + 1
             data['user_id'] = user_count
-            task_count = database.get_user_tasks_count(user_id=data['user_id'])
-            task_count = task_count[0]['count'] if task_count else 0
-            for item in data['todo']:
-                item['task_id'] = task_count + 1
-                item['created_date'] = datetime.today()
-                item['last_modified'] = datetime.today()
-                item['due_date'] = datetime.strptime(item['due_date'], '%Y-%m-%d')
-                task_count += 1
             database.add_user(data)
+            # task_count = database.get_user_tasks_count(user_id=data['user_id'])
+            # task_count = task_count[0]['count'] if task_count else 0
+            # for item in data['todo']:
+            #     item['task_id'] = task_count + 1
+            #     item['created_date'] = datetime.today()
+            #     item['last_modified'] = datetime.today()
+            #     item['due_date'] = datetime.strptime(item['due_date'], '%Y-%m-%d')
+            #     task_count += 1
+            # database.add_user(data)
             return {'Message': 'Successfully inserted, user id - ' + str(user_count)}, 201
         except Exception as error:
             print('Error in add_user service - ', error)
