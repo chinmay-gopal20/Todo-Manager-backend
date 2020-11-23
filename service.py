@@ -76,7 +76,7 @@ class Service:
                 item['task_id'] = task_count + 1
                 item['created_date'] = datetime.today()
                 item['last_modified'] = datetime.today()
-                item['due_date'] = datetime.strptime(item['due_date'], '%Y-%m-%d')
+                item['due_date'] = datetime.strptime(item['due_date'], "%a %b %d %Y %H:%M:%S %Z%z (IST)")
                 task_count += 1
             updated_doc = database.add_task(user_id=user_id, data=data['todo'])
             del updated_doc['_id']
