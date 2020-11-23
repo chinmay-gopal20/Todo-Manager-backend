@@ -59,12 +59,19 @@ class Database:
         except Exception as error:
             print('Error while getting total number of tasks for user - ', str(user_id), ' - ', error)
 
+    def add_user_data(self, data=None):
+        try:
+            data_collection = self.db['todo_data']
+            data_collection.insert(data)
+        except Exception as error:
+            print('Error while adding user data - ', error)
+
     # add new user
     def add_user(self, data=None):
         try:
             print('add_user - Database')
-            collection = self.db['todo_user']
-            return collection.insert(data)
+            user_collection = self.db['todo_user']
+            return user_collection.insert(data)
         except Exception as error:
             print('Error while adding user - ', error)
 

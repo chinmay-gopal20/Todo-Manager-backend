@@ -92,7 +92,7 @@ class Task(Resource):
 class Start(Resource):
     @staticmethod
     def get():
-        return "Welcome"
+        return "Welcome to ToDo-Manager"
 
 
 class LoginVerification(Resource):

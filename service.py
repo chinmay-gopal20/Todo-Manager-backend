@@ -35,17 +35,9 @@ class Service:
             database = Database()
             user_count = database.get_user_count()
             user_count = (user_count[0]['count'] if user_count else 0) + 1
+            database.add_user_data(data={'user_id':user_count})
             data['user_id'] = user_count
             database.add_user(data)
-            # task_count = database.get_user_tasks_count(user_id=data['user_id'])
-            # task_count = task_count[0]['count'] if task_count else 0
-            # for item in data['todo']:
-            #     item['task_id'] = task_count + 1
-            #     item['created_date'] = datetime.today()
-            #     item['last_modified'] = datetime.today()
-            #     item['due_date'] = datetime.strptime(item['due_date'], '%Y-%m-%d')
-            #     task_count += 1
-            # database.add_user(data)
             return {'message': 'Successfully inserted', 'user id': str(user_count)}, 201
         except Exception as error:
             print('Error in add_user service - ', error)
