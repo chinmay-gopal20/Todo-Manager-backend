@@ -76,7 +76,7 @@ class Service:
                 item['task_id'] = task_count + 1
                 item['created_date'] = datetime.today()
                 item['last_modified'] = datetime.today()
-                item['due_date'] = datetime.strptime(item['due_date'], "%a %b %d %Y %H:%M:%S %Z%z (IST)")
+                item['due_date'] = datetime.strptime(item['due_date'], "%a %b %d %Y %H:%M:%S %Z%z (India Standard Time)")
                 task_count += 1
             updated_doc = database.add_task(user_id=user_id, data=data['todo'])
             del updated_doc['_id']
@@ -92,7 +92,7 @@ class Service:
         try:
             print('update_task - Service')
             database = Database()
-            data['due_date'] = datetime.strptime(data['due_date'], "%a %b %d %Y %H:%M:%S %Z%z (IST)")
+            data['due_date'] = datetime.strptime(data['due_date'], "%a %b %d %Y %H:%M:%S %Z%z (India Standard Time)")
             data['last_modified'] = datetime.today()
             database.update_task(user_id=user_id, task_id=task_id, data=data)
             return {'message': 'Successfully Updated'}, 201
