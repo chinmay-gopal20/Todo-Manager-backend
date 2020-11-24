@@ -92,6 +92,7 @@ class Service:
         try:
             print('update_task - Service')
             database = Database()
+            data['due_date'] = datetime.strptime(data['due_date'], "%a %b %d %Y %H:%M:%S %Z%z (IST)")
             data['last_modified'] = datetime.today()
             database.update_task(user_id=user_id, task_id=task_id, data=data)
             return {'message': 'Successfully Updated'}, 201
